@@ -1,0 +1,42 @@
+# Optuna 优化配置: 随机森林
+data_path: data/nasa_subset_B0005.csv
+target_column: capacity
+
+# 要优化的模型 (使用完整路径)
+model_name: "sklearn.ensemble.RandomForestRegressor"
+
+# 超参数搜索空间
+# 每个参数定义:
+#   type: 'int', 'float', 'categorical'
+#   args: 传给 trial.suggest_* 的参数
+search_space:
+  n_estimators:
+    type: "int"
+    args:
+      low: 50
+      high: 500
+      step: 50
+  
+  max_depth:
+    type: "int"
+    args:
+      low: 5
+      high: 30
+      
+  min_samples_leaf:
+    type: "int"
+    args:
+      low: 1
+      high: 10
+
+  min_samples_split:
+    type: "int"
+    args:
+      low: 2
+      high: 20
+
+  max_features:
+    type: "categorical"
+    args:
+      # Optuna >= 2.0.0, choices 是一个列表
+      choices: ["sqrt", "log2", null] 

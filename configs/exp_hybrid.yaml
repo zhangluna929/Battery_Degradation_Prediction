@@ -1,0 +1,27 @@
+# 实验配置: 混合模型 (双指数 + TCN)
+run_name: hybrid_exp_tcn
+experiment: battery_degradation
+data_path: data/nasa_subset_B0005.csv
+
+# 数据相关配置
+target_column: capacity
+test_size: 0.2
+
+# 混合模型定义
+model_type: hybrid
+hybrid_params:
+  # 1. 经验模型 (来自 empirical.py)
+  empirical_model_fn: double_exponential_model
+
+  # 2. 残差学习器 (来自 deep.py)
+  residual_learner_fn: build_tcn
+  residual_learner_params:
+    filters: 32
+    kernel_size: 2
+    dilations: [1, 2, 4]
+  
+  # 3. 残差学习器的训练参数 (传给 model.fit)
+  fit_params:
+    epochs: 40
+    batch_size: 32
+    verbose: 1 

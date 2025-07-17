@@ -1,0 +1,21 @@
+# 实验配置: GRU with MC Dropout
+run_name: gru_with_uncertainty
+experiment: battery_degradation
+data_path: data/nasa_subset_B0005.csv  # 假设有一个预处理过的子集
+
+# 数据相关配置
+target_column: capacity
+test_size: 0.2
+
+# 模型定义
+# `build_gru` 来自 `battery_degradation.models.deep`
+model_fn: build_gru
+model_params:
+  units: 64
+  dropout: 0.25 # Dropout 在 MC 采样中至关重要
+
+# 训练参数 (传给 model.fit)
+train_params:
+  epochs: 50
+  batch_size: 32
+  verbose: 1 

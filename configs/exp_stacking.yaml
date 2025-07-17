@@ -1,0 +1,27 @@
+# 实验配置: Stacking 集成学习
+run_name: stacking_rf_xgb
+experiment: battery_degradation
+data_path: data/nasa_subset_B0005.csv
+
+target_column: capacity
+test_size: 0.2
+
+model_type: stacking
+
+stacking_params:
+  # Level 0: 基础学习器
+  # 使用模型的完整路径
+  base_learners:
+    "sklearn.ensemble.RandomForestRegressor":
+      n_estimators: 100
+      max_depth: 10
+      random_state: 42
+    "xgboost.XGBRegressor":
+      n_estimators: 150
+      learning_rate: 0.1
+      random_state: 42
+
+  # Level 1: 元学习器
+  meta_learner:
+    name: "sklearn.linear_model.LinearRegression"
+    params: {} 
